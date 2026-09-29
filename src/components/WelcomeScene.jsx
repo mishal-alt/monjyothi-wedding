@@ -42,7 +42,7 @@ export default function WelcomeScene({ brideFirstName, groomFirstName, date }) {
         </div>
 
         <div className="photo-slot">
-          <img src={coupleImg} alt={`${groomFirstName} and ${brideFirstName}`} />
+          <img className="photo-main" src={coupleImg} alt={`${groomFirstName} and ${brideFirstName}`} />
         </div>
 
         <div className="scroll-cue">
