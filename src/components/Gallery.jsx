@@ -1,39 +1,22 @@
-import ringImg from '../assets/story-ring.jpg'
-import cafeImg from '../assets/story-cafe.jpg'
+import moment1 from '../assets/moments/moment-1.jpg'
+import moment2 from '../assets/moments/moment-2.jpg'
+import moment3 from '../assets/moments/moment-3.jpg'
+import moment4 from '../assets/moments/moment-4.jpg'
+import moment5 from '../assets/moments/moment-5.jpg'
+import moment6 from '../assets/moments/moment-6.jpg'
 
-function CameraIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-      <rect x="3" y="5" width="18" height="14" rx="2" />
-      <circle cx="9" cy="10" r="1.6" />
-      <path d="M21 16l-5.5-5-4 4-2.5-2L3 18" />
-    </svg>
-  )
-}
+const photos = [moment1, moment2, moment3, moment4, moment5, moment6]
 
-const photos = [
-  { caption: 'The Promise', image: ringImg },
-  { caption: 'Our Story', image: cafeImg },
-]
-
-export default function Gallery({ captions }) {
+export default function Gallery() {
   return (
     <section style={{ background: 'var(--cream-deep)' }}>
       <div className="wrap">
         <div className="section-sub">A few frames</div>
         <h2 className="section-title">Our Moments</h2>
         <div className="gallery">
-          {photos.map((photo) => (
-            <div className="frame photo reveal" key={photo.caption}>
-              <img src={photo.image} alt={photo.caption} />
-              <div className="frame-cap">{photo.caption}</div>
-            </div>
-          ))}
-          {captions.map((caption) => (
-            <div className="frame reveal" key={caption}>
-              <CameraIcon />
-              <div className="tag">Photo coming soon</div>
-              <div className="cap">{caption}</div>
+          {photos.map((src, i) => (
+            <div className="frame photo reveal" key={i}>
+              <img src={src} alt="" />
             </div>
           ))}
         </div>

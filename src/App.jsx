@@ -3,7 +3,6 @@ import DoorsScene from './components/DoorsScene.jsx'
 import WelcomeScene from './components/WelcomeScene.jsx'
 import Countdown from './components/Countdown.jsx'
 import FamilyInvitation from './components/FamilyInvitation.jsx'
-import CoupleSection from './components/CoupleSection.jsx'
 import Timeline from './components/Timeline.jsx'
 import Venue from './components/Venue.jsx'
 import Gallery from './components/Gallery.jsx'
@@ -58,10 +57,9 @@ export default function App() {
 
         <FamilyInvitation bride={wedding.bride} groom={wedding.groom} />
 
-        <CoupleSection bride={wedding.bride} groom={wedding.groom} />
         <Timeline events={wedding.events} venueName={wedding.venue.name} />
         <Venue venue={wedding.venue} />
-        <Gallery captions={wedding.galleryPlaceholders} />
+        <Gallery />
         <RsvpSection whatsappNumber={wedding.whatsappNumber} whatsappDisplay={wedding.whatsappDisplay} />
 
         <Footer names={coupleNames} />

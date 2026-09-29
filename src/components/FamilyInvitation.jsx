@@ -1,13 +1,15 @@
-import garlandImg from '../assets/garland.jpg'
+import bgImg from '../assets/moments/moment-1.jpg'
 
 export default function FamilyInvitation({ bride, groom }) {
   const brideFirst = bride.name.split(' ')[0]
   const groomFirst = groom.name.split(' ')[0]
 
   return (
-    <section style={{ background: 'var(--white)' }}>
+    <section
+      className="invite-section"
+      style={{ backgroundImage: `linear-gradient(rgba(46,3,9,.7), rgba(46,3,9,.7)), url(${bgImg})` }}
+    >
       <div className="wrap reveal">
-        <img className="garland" src={garlandImg} alt="" aria-hidden="true" />
         <p className="invite-line">
           {groom.father} &amp; {groom.mother}
         </p>

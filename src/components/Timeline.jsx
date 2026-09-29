@@ -1,3 +1,5 @@
+import floralCornerImg from '../assets/floral-corner.png'
+
 function toGCalUTC(date) {
   return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'
 }
@@ -51,6 +53,7 @@ export default function Timeline({ events, venueName }) {
         <div className="timeline">
           {events.map((event) => (
             <article className="event-card reveal" key={`${event.name}-${event.day}`}>
+              <img className="event-card-flower" src={floralCornerImg} alt="" aria-hidden="true" />
               <div className="event-date-label">
                 {event.weekday}, {event.day} {event.month}
               </div>

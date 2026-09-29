@@ -59,5 +59,4 @@ export const wedding = {
       note: 'An afternoon reception to celebrate together.',
     },
   ],
-  galleryPlaceholders: ['Family', 'Together'],
 }
