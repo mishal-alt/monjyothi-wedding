@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import DoorsScene from './components/DoorsScene.jsx'
+import AmbientPetals from './components/AmbientPetals.jsx'
 import WelcomeScene from './components/WelcomeScene.jsx'
 import Countdown from './components/Countdown.jsx'
 import FamilyInvitation from './components/FamilyInvitation.jsx'
@@ -28,7 +29,7 @@ export default function App() {
     document.documentElement.classList.remove('locked')
     document.body.classList.remove('locked')
     setDoorsOpening(true)
-    setTimeout(() => setDoorsHidden(true), 1100)
+    setTimeout(() => setDoorsHidden(true), 2150)
     musicRef.current?.tryPlay()
   }
 
@@ -38,6 +39,7 @@ export default function App() {
 
   return (
     <>
+      <AmbientPetals />
       <DoorsScene names={coupleNames} onOpen={handleOpen} opening={doorsOpening} hidden={doorsHidden} />
 
       <div className="device">
@@ -60,7 +62,7 @@ export default function App() {
         <Timeline events={wedding.events} venueName={wedding.venue.name} />
         <Venue venue={wedding.venue} />
         <Gallery />
-        <RsvpSection whatsappNumber={wedding.whatsappNumber} whatsappDisplay={wedding.whatsappDisplay} />
+        <RsvpSection whatsappNumber={wedding.whatsappNumber} />
 
         <Footer names={coupleNames} />
       </div>

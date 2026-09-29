@@ -65,37 +65,26 @@ img{max-width:100%;}
   max-width:420px;
   margin-inline:auto;
   z-index:60;
-  perspective:1400px;
-  background:var(--maroon-darker);
+  perspective:1600px;
+  background:transparent;
+  transition:opacity .35s ease 1.75s;
 }
 @media(min-width:480px){ .doors-scene{ border-radius:30px; overflow:hidden; } }
+.doors-scene.opening{ opacity:0; }
 .doors-scene.hidden{ display:none; }
 
 .door{
   position:absolute; top:0; bottom:0; width:50%;
   background:
-    repeating-linear-gradient(45deg, transparent 0 7px, rgba(201,153,61,.28) 7px 8px),
-    repeating-linear-gradient(-45deg, transparent 0 7px, rgba(201,153,61,.28) 7px 8px),
-    linear-gradient(180deg, var(--maroon) 0%, var(--maroon-deep) 60%, var(--maroon-darker) 100%);
-  transition:transform 1.05s cubic-bezier(.76,0,.24,1), opacity 1.05s ease;
-  box-shadow: inset 0 0 40px rgba(0,0,0,.5);
+    radial-gradient(55% 38% at 28% 18%, rgba(233,205,140,.14), transparent 65%),
+    radial-gradient(50% 34% at 72% 68%, rgba(233,205,140,.08), transparent 65%),
+    radial-gradient(140% 120% at 50% 12%, var(--maroon) 0%, var(--maroon-deep) 55%, var(--maroon-darker) 100%);
+  transition:transform 1.7s cubic-bezier(.65,0,.35,1) .2s, opacity 1.7s ease .2s;
+  box-shadow: inset 0 0 50px rgba(0,0,0,.5);
+  backface-visibility:hidden;
 }
-.door.left{ left:0; transform-origin:left center; border-right:1px solid rgba(233,205,140,.35); }
-.door.right{ right:0; transform-origin:right center; border-left:1px solid rgba(233,205,140,.35); }
-.door::before{
-  content:"";
-  position:absolute; left:10px; right:10px; top:10px; bottom:10px;
-  border:1.5px solid rgba(233,205,140,.55);
-  border-radius:120px 120px 10px 10px;
-  pointer-events:none;
-}
-.door::after{
-  content:"";
-  position:absolute; left:22px; right:22px; top:22px; bottom:22px;
-  border:1px solid rgba(233,205,140,.3);
-  border-radius:100px 100px 6px 6px;
-  pointer-events:none;
-}
+.door.left{ left:0; transform-origin:left center; }
+.door.right{ right:0; transform-origin:right center; }
 .doors-scene.opening .door.left{ transform:rotateY(-100deg); opacity:.3; }
 .doors-scene.opening .door.right{ transform:rotateY(100deg); opacity:.3; }
 
@@ -110,7 +99,45 @@ img{max-width:100%;}
   transition:opacity .4s ease;
 }
 .doors-scene.opening .doors-face{ opacity:0; }
+.doors-emblem{ width:44px; height:44px; margin-bottom:14px; }
+.door-petal{
+  position:absolute; bottom:-16px; width:7px; height:10px;
+  background:var(--gold-light); opacity:.5; border-radius:60% 0 60% 0;
+  animation-name:doorPetalFloat; animation-timing-function:linear; animation-iteration-count:infinite;
+  z-index:1; pointer-events:none;
+  transition:opacity .4s ease;
+}
+.doors-scene.opening .door-petal{ opacity:0; }
+@keyframes doorPetalFloat{
+  0%{ transform:translateY(0) rotate(0deg); opacity:0; }
+  10%{ opacity:.5; }
+  90%{ opacity:.3; }
+  100%{ transform:translateY(-640px) rotate(280deg); opacity:0; }
+}
+
+.ambient-petals{
+  position:fixed; top:0; left:0; right:0; bottom:0; max-width:420px; margin-inline:auto;
+  z-index:40; pointer-events:none; overflow:hidden;
+}
+.ambient-petal{
+  position:absolute; bottom:-16px; width:7px; height:10px;
+  background:var(--gold-light); opacity:.45; border-radius:60% 0 60% 0;
+  animation-name:doorPetalFloat; animation-timing-function:linear; animation-iteration-count:infinite;
+}
+
 .doors-eyebrow{ text-transform:uppercase; letter-spacing:.32em; font-size:11px; color:var(--gold); }
+.doors-eyebrow-row{ display:flex; align-items:center; justify-content:center; gap:10px; }
+.sprig{ width:32px; height:12px; flex-shrink:0; opacity:.85; }
+.sprig.right{ transform:scaleX(-1); }
+.doors-divider{ display:flex; align-items:center; justify-content:center; gap:8px; margin-top:16px; }
+.doors-divider .line{ height:1px; width:34px; background:var(--gold); opacity:.6; }
+.doors-divider .dot{ width:5px; height:5px; border-radius:50%; background:var(--gold); transform:rotate(45deg); }
+.doors-corner{ position:absolute; width:26px; height:26px; z-index:3; pointer-events:none; transition:opacity .4s ease; }
+.doors-scene.opening .doors-corner{ opacity:0; }
+.doors-corner.tl{ top:16px; left:16px; border-top:1.5px solid var(--gold); border-left:1.5px solid var(--gold); }
+.doors-corner.tr{ top:16px; right:16px; border-top:1.5px solid var(--gold); border-right:1.5px solid var(--gold); }
+.doors-corner.bl{ bottom:16px; left:16px; border-bottom:1.5px solid var(--gold); border-left:1.5px solid var(--gold); }
+.doors-corner.br{ bottom:16px; right:16px; border-bottom:1.5px solid var(--gold); border-right:1.5px solid var(--gold); }
 .doors-names{
   font-family:'Cormorant Garamond',Georgia,serif;
   color:var(--white);
@@ -118,21 +145,23 @@ img{max-width:100%;}
   line-height:1.15;
   margin-block:14px;
 }
-.ring-btn{
-  width:84px;height:84px;
-  border-radius:50%;
-  border:1.5px solid var(--gold);
-  background:radial-gradient(circle at 50% 35%, rgba(233,205,140,.18), transparent 70%);
-  color:var(--gold-light);
-  font-family:'Jost',sans-serif;
-  font-size:11px;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  cursor:pointer;
-  margin-block:8px;
-  animation:breathe 2.6s ease-in-out infinite;
+.ribbon-btn{
+  position:relative; width:92px; margin:10px auto; padding:0;
+  background:none; border:none; cursor:pointer; display:block;
 }
-.ring-btn:active{ transform:scale(.94); }
+.ribbon-btn::before{
+  content:""; position:absolute; inset:-18px; z-index:-1;
+  background:radial-gradient(circle, rgba(233,205,140,.32), transparent 70%);
+  border-radius:50%;
+  animation:breathe 2.8s ease-in-out infinite;
+}
+.ribbon-btn svg{ width:100%; height:auto; display:block; }
+.ribbon-btn:active{ transform:scale(.95); }
+.ribbon-left, .ribbon-right{ transition:transform .55s ease, opacity .55s ease; transform-origin:60px 60px; }
+.ribbon-knot{ transition:opacity .3s ease; }
+.doors-scene.opening .ribbon-left{ transform:translate(-12px,10px) rotate(-28deg); opacity:0; }
+.doors-scene.opening .ribbon-right{ transform:translate(12px,10px) rotate(28deg); opacity:0; }
+.doors-scene.opening .ribbon-knot{ opacity:0; }
 @keyframes breathe{
   0%,100%{ box-shadow:0 0 0 0 rgba(201,153,61,.45); }
   50%{ box-shadow:0 0 0 12px rgba(201,153,61,0); }
@@ -218,9 +247,11 @@ section{ padding-block:44px; }
 .gallery .reveal:nth-child(4){ transition-delay:.18s; }
 
 @media (prefers-reduced-motion: reduce){
-  .ring-btn{ animation:none!important; }
+  .ribbon-btn::before{ animation:none!important; }
+  .ribbon-left, .ribbon-right, .ribbon-knot{ transition:none!important; }
   .lantern{ animation:none!important; }
   .scroll-cue svg{ animation:none!important; }
+  .door-petal, .ambient-petal{ animation:none!important; display:none; }
   .reveal{ opacity:1!important; transform:none!important; transition:none!important; }
   .door{ transition:none!important; }
 }
@@ -299,15 +330,14 @@ section{ padding-block:44px; }
 
 /* ---------- rsvp ---------- */
 .rsvp-card{ margin-top:26px; background:var(--paper); border:1px solid var(--gold-light); border-radius:16px; padding:28px 22px; text-align:center; }
-.rsvp-number{
-  margin-top:14px; display:inline-flex; align-items:center; gap:10px;
-  background:var(--cream-deep); border-radius:999px; padding:8px 16px; font-size:15px; letter-spacing:.04em; color:var(--ink);
+.rsvp-message{
+  display:block; width:100%; margin-top:18px; padding:14px 16px;
+  background:var(--cream-deep); border:1px solid var(--gold-light); border-radius:14px;
+  font-family:'Jost',sans-serif; font-size:14px; color:var(--ink); line-height:1.6;
+  resize:vertical; min-height:72px;
 }
-.copy-btn{
-  border:none; background:var(--maroon); color:var(--white); width:26px;height:26px; border-radius:50%;
-  font-size:12px; cursor:pointer; display:flex;align-items:center;justify-content:center;
-}
-.copy-note{ display:block; margin-top:8px; font-size:11px; color:var(--gold); height:14px; }
+.rsvp-message:focus{ outline:none; border-color:var(--gold); }
+.rsvp-card .btn{ width:100%; }
 
 footer{ background:var(--white); color:var(--ink-soft); text-align:center; padding:30px 0 0; overflow:hidden; }
 footer .script{ font-size:40px; color:var(--maroon); }

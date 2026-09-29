@@ -19,7 +19,6 @@ export const wedding = {
     mapsUrl: 'https://maps.app.goo.gl/FFgkJJcps63vkUvD7?g_st=ic',
   },
   whatsappNumber: '918134020118',
-  whatsappDisplay: '+91 81340 20118',
   musicSrc: '/andriig-wedding-wedding-music-604061.mp3',
   events: [
     {

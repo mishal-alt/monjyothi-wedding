@@ -67,37 +67,26 @@
     max-width:420px;
     margin-inline:auto;
     z-index:60;
-    perspective:1400px;
-    background:var(--maroon-darker);
+    perspective:1600px;
+    background:transparent;
+    transition:opacity .35s ease 1.75s;
   }
   @media(min-width:480px){ .doors-scene{ border-radius:30px; overflow:hidden; } }
+  .doors-scene.opening{ opacity:0; }
   .doors-scene.hidden{ display:none; }
 
   .door{
     position:absolute; top:0; bottom:0; width:50%;
     background:
-      repeating-linear-gradient(45deg, transparent 0 7px, rgba(201,153,61,.28) 7px 8px),
-      repeating-linear-gradient(-45deg, transparent 0 7px, rgba(201,153,61,.28) 7px 8px),
-      linear-gradient(180deg, var(--maroon) 0%, var(--maroon-deep) 60%, var(--maroon-darker) 100%);
-    transition:transform 1.05s cubic-bezier(.76,0,.24,1), opacity 1.05s ease;
-    box-shadow: inset 0 0 40px rgba(0,0,0,.5);
+      radial-gradient(55% 38% at 28% 18%, rgba(233,205,140,.14), transparent 65%),
+      radial-gradient(50% 34% at 72% 68%, rgba(233,205,140,.08), transparent 65%),
+      radial-gradient(140% 120% at 50% 12%, var(--maroon) 0%, var(--maroon-deep) 55%, var(--maroon-darker) 100%);
+    transition:transform 1.7s cubic-bezier(.65,0,.35,1) .2s, opacity 1.7s ease .2s;
+    box-shadow: inset 0 0 50px rgba(0,0,0,.5);
+    backface-visibility:hidden;
   }
-  .door.left{ left:0; transform-origin:left center; border-right:1px solid rgba(233,205,140,.35); }
-  .door.right{ right:0; transform-origin:right center; border-left:1px solid rgba(233,205,140,.35); }
-  .door::before{
-    content:"";
-    position:absolute; left:10px; right:10px; top:10px; bottom:10px;
-    border:1.5px solid rgba(233,205,140,.55);
-    border-radius:120px 120px 10px 10px;
-    pointer-events:none;
-  }
-  .door::after{
-    content:"";
-    position:absolute; left:22px; right:22px; top:22px; bottom:22px;
-    border:1px solid rgba(233,205,140,.3);
-    border-radius:100px 100px 6px 6px;
-    pointer-events:none;
-  }
+  .door.left{ left:0; transform-origin:left center; }
+  .door.right{ right:0; transform-origin:right center; }
   .doors-scene.opening .door.left{ transform:rotateY(-100deg); opacity:.3; }
   .doors-scene.opening .door.right{ transform:rotateY(100deg); opacity:.3; }
 
@@ -112,7 +101,45 @@
     transition:opacity .4s ease;
   }
   .doors-scene.opening .doors-face{ opacity:0; }
+  .doors-emblem{ width:44px; height:44px; margin-bottom:14px; }
+  .door-petal{
+    position:absolute; bottom:-16px; width:7px; height:10px;
+    background:var(--gold-light); opacity:.5; border-radius:60% 0 60% 0;
+    animation-name:doorPetalFloat; animation-timing-function:linear; animation-iteration-count:infinite;
+    z-index:1; pointer-events:none;
+    transition:opacity .4s ease;
+  }
+  .doors-scene.opening .door-petal{ opacity:0; }
+  @keyframes doorPetalFloat{
+    0%{ transform:translateY(0) rotate(0deg); opacity:0; }
+    10%{ opacity:.5; }
+    90%{ opacity:.3; }
+    100%{ transform:translateY(-640px) rotate(280deg); opacity:0; }
+  }
+
+  .ambient-petals{
+    position:fixed; top:0; left:0; right:0; bottom:0; max-width:420px; margin-inline:auto;
+    z-index:40; pointer-events:none; overflow:hidden;
+  }
+  .ambient-petal{
+    position:absolute; bottom:-16px; width:7px; height:10px;
+    background:var(--gold-light); opacity:.45; border-radius:60% 0 60% 0;
+    animation-name:doorPetalFloat; animation-timing-function:linear; animation-iteration-count:infinite;
+  }
+
   .doors-eyebrow{ text-transform:uppercase; letter-spacing:.32em; font-size:11px; color:var(--gold); }
+  .doors-eyebrow-row{ display:flex; align-items:center; justify-content:center; gap:10px; }
+  .sprig{ width:32px; height:12px; flex-shrink:0; opacity:.85; }
+  .sprig.right{ transform:scaleX(-1); }
+  .doors-divider{ display:flex; align-items:center; justify-content:center; gap:8px; margin-top:16px; }
+  .doors-divider .line{ height:1px; width:34px; background:var(--gold); opacity:.6; }
+  .doors-divider .dot{ width:5px; height:5px; border-radius:50%; background:var(--gold); transform:rotate(45deg); }
+  .doors-corner{ position:absolute; width:26px; height:26px; z-index:3; pointer-events:none; transition:opacity .4s ease; }
+  .doors-scene.opening .doors-corner{ opacity:0; }
+  .doors-corner.tl{ top:16px; left:16px; border-top:1.5px solid var(--gold); border-left:1.5px solid var(--gold); }
+  .doors-corner.tr{ top:16px; right:16px; border-top:1.5px solid var(--gold); border-right:1.5px solid var(--gold); }
+  .doors-corner.bl{ bottom:16px; left:16px; border-bottom:1.5px solid var(--gold); border-left:1.5px solid var(--gold); }
+  .doors-corner.br{ bottom:16px; right:16px; border-bottom:1.5px solid var(--gold); border-right:1.5px solid var(--gold); }
   .doors-names{
     font-family:'Cormorant Garamond',Georgia,serif;
     color:var(--white);
@@ -120,21 +147,23 @@
     line-height:1.15;
     margin-block:14px;
   }
-  .ring-btn{
-    width:84px;height:84px;
-    border-radius:50%;
-    border:1.5px solid var(--gold);
-    background:radial-gradient(circle at 50% 35%, rgba(233,205,140,.18), transparent 70%);
-    color:var(--gold-light);
-    font-family:'Jost',sans-serif;
-    font-size:11px;
-    letter-spacing:.22em;
-    text-transform:uppercase;
-    cursor:pointer;
-    margin-block:8px;
-    animation:breathe 2.6s ease-in-out infinite;
+  .ribbon-btn{
+    position:relative; width:92px; margin:10px auto; padding:0;
+    background:none; border:none; cursor:pointer; display:block;
   }
-  .ring-btn:active{ transform:scale(.94); }
+  .ribbon-btn::before{
+    content:""; position:absolute; inset:-18px; z-index:-1;
+    background:radial-gradient(circle, rgba(233,205,140,.32), transparent 70%);
+    border-radius:50%;
+    animation:breathe 2.8s ease-in-out infinite;
+  }
+  .ribbon-btn svg{ width:100%; height:auto; display:block; }
+  .ribbon-btn:active{ transform:scale(.95); }
+  .ribbon-left, .ribbon-right{ transition:transform .55s ease, opacity .55s ease; transform-origin:60px 60px; }
+  .ribbon-knot{ transition:opacity .3s ease; }
+  .doors-scene.opening .ribbon-left{ transform:translate(-12px,10px) rotate(-28deg); opacity:0; }
+  .doors-scene.opening .ribbon-right{ transform:translate(12px,10px) rotate(28deg); opacity:0; }
+  .doors-scene.opening .ribbon-knot{ opacity:0; }
   @keyframes breathe{
     0%,100%{ box-shadow:0 0 0 0 rgba(201,153,61,.45); }
     50%{ box-shadow:0 0 0 12px rgba(201,153,61,0); }
@@ -204,9 +233,11 @@
   .gallery .reveal:nth-child(4){ transition-delay:.18s; }
 
   @media (prefers-reduced-motion: reduce){
-    .ring-btn{ animation:none!important; }
+    .ribbon-btn::before{ animation:none!important; }
+    .ribbon-left, .ribbon-right, .ribbon-knot{ transition:none!important; }
     .lantern{ animation:none!important; }
     .scroll-cue svg{ animation:none!important; }
+    .door-petal, .ambient-petal{ animation:none!important; display:none; }
     .js .reveal{ opacity:1!important; transform:none!important; transition:none!important; }
     .door{ transition:none!important; }
   }
@@ -291,15 +322,14 @@
 
   /* ---------- rsvp ---------- */
   .rsvp-card{ margin-top:26px; background:var(--paper); border:1px solid var(--gold-light); border-radius:16px; padding:28px 22px; text-align:center; }
-  .rsvp-number{
-    margin-top:14px; display:inline-flex; align-items:center; gap:10px;
-    background:var(--cream-deep); border-radius:999px; padding:8px 16px; font-size:15px; letter-spacing:.04em; color:var(--ink);
+  .rsvp-message{
+    display:block; width:100%; margin-top:18px; padding:14px 16px;
+    background:var(--cream-deep); border:1px solid var(--gold-light); border-radius:14px;
+    font-family:'Jost',sans-serif; font-size:14px; color:var(--ink); line-height:1.6;
+    resize:vertical; min-height:72px;
   }
-  .copy-btn{
-    border:none; background:var(--maroon); color:var(--white); width:26px;height:26px; border-radius:50%;
-    font-size:12px; cursor:pointer; display:flex;align-items:center;justify-content:center;
-  }
-  .copy-note{ display:block; margin-top:8px; font-size:11px; color:var(--gold); height:14px; }
+  .rsvp-message:focus{ outline:none; border-color:var(--gold); }
+  .rsvp-card .btn{ width:100%; }
 
   footer{ background:var(--white); color:var(--ink-soft); text-align:center; padding:30px 0 0; overflow:hidden; }
   footer .script{ font-size:40px; color:var(--maroon); }
@@ -332,14 +362,72 @@
   document.documentElement.classList.add('js','locked');
 </script>
 
+<div class="ambient-petals" aria-hidden="true">
+  <span class="ambient-petal" style="left:6%; animation-delay:0s; animation-duration:18s;"></span>
+  <span class="ambient-petal" style="left:20%; animation-delay:5s; animation-duration:22s;"></span>
+  <span class="ambient-petal" style="left:35%; animation-delay:10s; animation-duration:16s;"></span>
+  <span class="ambient-petal" style="left:50%; animation-delay:3s; animation-duration:20s;"></span>
+  <span class="ambient-petal" style="left:65%; animation-delay:8s; animation-duration:19s;"></span>
+  <span class="ambient-petal" style="left:80%; animation-delay:2s; animation-duration:21s;"></span>
+  <span class="ambient-petal" style="left:92%; animation-delay:12s; animation-duration:17s;"></span>
+</div>
+
 <div class="doors-scene" id="doors">
   <div class="door left"></div>
   <div class="door right"></div>
+  <span class="door-petal" style="left:10%; animation-delay:0s; animation-duration:13s;"></span>
+  <span class="door-petal" style="left:26%; animation-delay:4s; animation-duration:15s;"></span>
+  <span class="door-petal" style="left:46%; animation-delay:2s; animation-duration:12s;"></span>
+  <span class="door-petal" style="left:64%; animation-delay:6s; animation-duration:14s;"></span>
+  <span class="door-petal" style="left:80%; animation-delay:1s; animation-duration:16s;"></span>
+  <span class="door-petal" style="left:92%; animation-delay:5s; animation-duration:13s;"></span>
+  <span class="doors-corner tl"></span>
+  <span class="doors-corner tr"></span>
+  <span class="doors-corner bl"></span>
+  <span class="doors-corner br"></span>
   <div class="doors-face">
-    <div class="doors-eyebrow">You are invited</div>
+    <svg class="doors-emblem" viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="18" stroke="var(--gold)" stroke-width="1" opacity=".8"/>
+      <circle cx="30" cy="30" r="12" stroke="var(--gold)" stroke-width=".8" opacity=".55"/>
+      <circle cx="48" cy="30" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="42.73" cy="42.73" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="30" cy="48" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="17.27" cy="42.73" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="12" cy="30" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="17.27" cy="17.27" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="30" cy="12" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="42.73" cy="17.27" r="2" fill="var(--gold)" opacity=".85"/>
+      <circle cx="30" cy="30" r="3" fill="var(--gold)"/>
+    </svg>
+    <div class="doors-eyebrow-row">
+      <svg class="sprig left" viewBox="0 0 44 16" fill="none">
+        <line x1="0" y1="8" x2="44" y2="8" stroke="var(--gold)" stroke-width=".8"/>
+        <ellipse cx="14" cy="8" rx="5" ry="2.4" fill="var(--gold)" opacity=".8" transform="rotate(-20 14 8)"/>
+        <ellipse cx="30" cy="8" rx="5" ry="2.4" fill="var(--gold)" opacity=".8" transform="rotate(20 30 8)"/>
+      </svg>
+      <div class="doors-eyebrow">You are invited</div>
+      <svg class="sprig right" viewBox="0 0 44 16" fill="none">
+        <line x1="0" y1="8" x2="44" y2="8" stroke="var(--gold)" stroke-width=".8"/>
+        <ellipse cx="14" cy="8" rx="5" ry="2.4" fill="var(--gold)" opacity=".8" transform="rotate(-20 14 8)"/>
+        <ellipse cx="30" cy="8" rx="5" ry="2.4" fill="var(--gold)" opacity=".8" transform="rotate(20 30 8)"/>
+      </svg>
+    </div>
     <h1 class="doors-names">Monjyoti &amp; Mridula</h1>
-    <button class="ring-btn" id="open-ring" aria-label="Open the invitation">Open</button>
-    <div class="doors-caption">Tap the ring to open the doors</div>
+    <div class="doors-divider"><span class="line"></span><span class="dot"></span><span class="line"></span></div>
+    <button class="ribbon-btn" id="open-ring" aria-label="Untie the ribbon to open the invitation">
+      <svg class="ribbon-bow" viewBox="0 0 120 150" fill="none">
+        <g class="ribbon-left">
+          <path d="M58,60 C40,40 15,42 16,62 C17,80 42,78 58,66 Z" fill="var(--gold)" opacity=".9"/>
+          <polygon points="50,68 60,68 58,140 55,122 52,140" fill="var(--gold)" opacity=".85"/>
+        </g>
+        <g class="ribbon-right">
+          <path d="M62,60 C80,40 105,42 104,62 C103,80 78,78 62,66 Z" fill="var(--gold)" opacity=".9"/>
+          <polygon points="60,68 70,68 68,140 65,122 62,140" fill="var(--gold)" opacity=".85"/>
+        </g>
+        <rect class="ribbon-knot" x="52" y="55" width="16" height="20" rx="6" fill="var(--gold-light)"/>
+      </svg>
+    </button>
+    <div class="doors-caption">Tap to untie the ribbon</div>
   </div>
 </div>
 
@@ -484,16 +572,10 @@
       <h2 class="section-title">RSVP</h2>
       <div class="rsvp-card reveal">
         <p style="font-size:14px; color:var(--ink-soft); line-height:1.7;">
-          Kindly confirm your presence and reach out for any queries on WhatsApp.
+          Kindly confirm your presence, or reach out with any questions — just send it straight to us on WhatsApp.
         </p>
-        <div class="rsvp-number">
-          <span id="phone-text">+91 81340 20118</span>
-          <button class="copy-btn" id="copy-btn" aria-label="Copy phone number" onclick="copyPhone()">✓</button>
-        </div>
-        <span class="copy-note" id="copy-note"></span>
-        <div>
-          <a class="btn" href="https://wa.me/918134020118" target="_blank" rel="noopener">Message on WhatsApp</a>
-        </div>
+        <textarea class="rsvp-message" id="rsvp-message" rows="3" aria-label="Message to send on WhatsApp">Hi! We're so excited to celebrate with you 🎉 Confirming our presence at the wedding!</textarea>
+        <a class="btn" id="whatsapp-btn" href="#" target="_blank" rel="noopener">Send on WhatsApp</a>
       </div>
     </div>
   </section>
@@ -553,18 +635,17 @@
     setInterval(tick, 1000);
   })();
 
-  function copyPhone(){
-    var text = "+918134020118";
-    var note = document.getElementById('copy-note');
-    function shown(msg){
-      if(note){ note.textContent = msg; setTimeout(function(){ note.textContent=''; }, 1800); }
+  (function(){
+    var textarea = document.getElementById('rsvp-message');
+    var link = document.getElementById('whatsapp-btn');
+    function syncLink(){
+      link.href = 'https://wa.me/918134020118?text=' + encodeURIComponent(textarea.value);
     }
-    if(navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(function(){ shown('Copied!'); }).catch(function(){ shown('+91 81340 20118'); });
-    } else {
-      shown('+91 81340 20118');
+    if(textarea && link){
+      syncLink();
+      textarea.addEventListener('input', syncLink);
     }
-  }
+  })();
 
   (function(){
     var flowerSrc = document.querySelector('.floral-corner');
@@ -595,7 +676,7 @@
       document.documentElement.classList.remove('locked');
       document.body.classList.remove('locked');
       doors.classList.add('opening');
-      setTimeout(function(){ doors.classList.add('hidden'); }, 1100);
+      setTimeout(function(){ doors.classList.add('hidden'); }, 2150);
       musicFrame.classList.add('show');
       if(MUSIC_SRC){
         bgm.src = MUSIC_SRC;
